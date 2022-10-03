@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using System.Text;
 
 namespace cultureinfo_bug;
 
@@ -31,9 +32,19 @@ public partial class MainPage : ContentPage
         // But it is: 10/1/2022 4:00:28 PM
         // (date and time is example only)
         //
+        var text = new StringBuilder();
+        text.AppendLine($"CurrentUICulture: {GetString(System.Threading.Thread.CurrentThread.CurrentUICulture)}");
+        text.AppendLine($"CurrentCulture: {GetString(System.Threading.Thread.CurrentThread.CurrentCulture)}");
+        this.LabelOutput.Text = text.ToString();
+
         CounterBtn.Text = DateTime.Now.ToString(new CultureInfo("nb-NO"));
 
 		SemanticScreenReader.Announce(CounterBtn.Text);
 	}
+
+    static string GetString(CultureInfo ci)
+    {
+        return $"Name: {ci.Name} NativeName: '{ci.NativeName}' DisplayName: '{ci.DisplayName}' EnglishName: '{ci.EnglishName}'";
+    }
 }
 
